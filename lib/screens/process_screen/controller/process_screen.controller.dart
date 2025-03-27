@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/models/path_data.model.dart';
+import 'package:webspark_test/screens/process_screen/path_finder/path_finder.dart';
 import 'package:webspark_test/services/http_service.dart';
 
 part 'process_screen.controller.freezed.dart';
@@ -64,7 +65,8 @@ class ProcessScreenController extends _$ProcessScreenController {
   }
 
   Future<void> _processPath(PathData path) async {
-    await Future.delayed(Duration(milliseconds: 200));
+    final shortestPath = PathFinder.processPath(path);
+    print('shortestPath $shortestPath');
   }
 
   Future<void> sendResults() async {
@@ -78,7 +80,7 @@ class ProcessScreenController extends _$ProcessScreenController {
 
     try {
       state = state.copyWith(state: ProcessingState.processing);
-
+      //add send here
       state = state.copyWith(state: ProcessingState.completed);
     } catch (e) {
       state = state.copyWith(

@@ -15,7 +15,7 @@ class HomeScreenController extends _$HomeScreenController {
 
   String? validateUrl(String? value) {
     if (value == null || value.isEmpty) {
-      return 'URL не може бути порожнім';
+      return 'URL cannot be empty.';
     }
 
     final RegExp urlRegExp = RegExp(

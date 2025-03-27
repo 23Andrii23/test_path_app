@@ -76,11 +76,14 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                     ),
                   ),
                   SizedBox(height: 16),
-                  LinearProgressIndicator(
-                    value: processState.progress / 100,
-                    minHeight: 10,
-                    backgroundColor: Colors.grey[300],
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator(
+                      value: processState.progress / 100,
+                      backgroundColor: Colors.grey[300],
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                    ),
                   ),
                   if (processState.errorMessage != null)
                     Padding(
@@ -104,9 +107,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
               child: OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (_) => processState.state == ProcessingState.completed
-                        ? Colors.green
-                        : Colors.blue,
+                    (_) => Colors.blue,
                   ),
                 ),
                 onPressed: processState.state == ProcessingState.processing
@@ -114,14 +115,10 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                     : () async {
                         if (processState.state == ProcessingState.completed) {
                           await controller.sendResults();
-                        } else {
-                          await controller.startProcessing();
                         }
                       },
                 child: Text(
-                  processState.state == ProcessingState.completed
-                      ? 'Send result to server'
-                      : 'Start processing',
+                  'Send result to server',
                   style: TextStyle(
                     color: Colors.white,
                   ),
