@@ -1,41 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:webspark_test/services/http_service.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:webspark_test/screens/home_screen/controller/home_screen.controller.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> {
   final _controller = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool _isUrlValid = false;
   String? _errorMessage;
-
-  String? _validateUrl(String? value) {
-    if (value == null || value.isEmpty) {
-      return 'URL не може бути порожнім';
-    }
-
-    final RegExp urlRegExp = RegExp(
-      r'^(https?:\/\/)?'
-      r'((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|'
-      r'((\d{1,3}\.){3}\d{1,3}))'
-      r'(\:\d+)?'
-      r'(\/[-a-z\d%_.~+]*)*'
-      r'(\?[;&a-z\d%_.~+=-]*)?'
-      r'(\#[-a-z\d_]*)?$',
-      caseSensitive: false,
-    );
-
-    if (!urlRegExp.hasMatch(value)) {
-      return 'Invalid URL. Check the format of the URL you entered.';
-    }
-
-    return null;
-  }
 
   @override
   void dispose() {
@@ -45,6 +22,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final state = ref.watch(homeScreenControllerProvider);
+    final controller = ref.read(homeScreenControllerProvider.notifier);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
@@ -87,7 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                       onPressed: () {
                                         _controller.clear();
                                         setState(() {
-                                          _isUrlValid = false;
                                           _errorMessage = null;
                                         });
                                       },
@@ -96,19 +75,26 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             keyboardType: TextInputType.url,
                             onChanged: (value) {
-                              final validationResult = _validateUrl(value);
                               setState(() {
-                                _isUrlValid = validationResult == null;
                                 _errorMessage = null;
                               });
                             },
-                            validator: _validateUrl,
+                            validator: controller.validateUrl,
                           ),
                         ),
                       ],
                     ),
                   ),
-                )
+                ),
+                if (state.hasError && _errorMessage == null)
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Text(
+                      state.error.toString(),
+                      style: TextStyle(color: Colors.red),
+                    ),
+                  ),
               ],
             ),
             Container(
@@ -120,22 +106,18 @@ class _HomeScreenState extends State<HomeScreen> {
                       (_) => Colors.blue),
                 ),
                 onPressed: () async {
-                  final validationResult = _validateUrl(_controller.text);
-                  if (validationResult != null) {
+                  if (_formKey.currentState!.validate()) {
+                    try {
+                      await controller.getMainData(_controller.text);
+                    } catch (e) {
+                      setState(() {
+                        _errorMessage = e.toString();
+                      });
+                    }
+                  } else {
                     setState(() {
-                      _errorMessage = validationResult;
+                      _errorMessage = controller.validateUrl(_controller.text);
                     });
-                    return;
-                  }
-
-                  try {
-                    await HttpService().getMainData(_controller.text);
-                  } catch (e) {
-                    if (!context.mounted) return;
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Помилка: $e')),
-                    );
                   }
                 },
                 child: Text(
