@@ -1,20 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webspark_test/models/main_response.model.dart';
+import 'package:webspark_test/screens/process_screen/controller/process_screen.controller.dart';
 
-class ProcessScreen extends StatefulWidget {
+class ProcessScreen extends ConsumerStatefulWidget {
   final MainResponse mainResponse;
+
   const ProcessScreen({
     required this.mainResponse,
     super.key,
   });
 
   @override
-  State<ProcessScreen> createState() => _ProcessScreenState();
+  ConsumerState<ProcessScreen> createState() => _ProcessScreenState();
 }
 
-class _ProcessScreenState extends State<ProcessScreen> {
+class _ProcessScreenState extends ConsumerState<ProcessScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref
+          .read(processScreenControllerProvider(widget.mainResponse).notifier)
+          .startProcessing();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final processState =
+        ref.watch(processScreenControllerProvider(widget.mainResponse));
+
+    final controller =
+        ref.read(processScreenControllerProvider(widget.mainResponse).notifier);
+
+    String statusText = 'Wait';
+    switch (processState.state) {
+      case ProcessingState.initial:
+        statusText = 'Ready';
+      case ProcessingState.processing:
+        statusText = 'Processing...';
+      case ProcessingState.completed:
+        statusText = 'Completed';
+      case ProcessingState.error:
+        statusText = 'Error!';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Process Screen'),
@@ -31,19 +62,38 @@ class _ProcessScreenState extends State<ProcessScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Wait',
+                    statusText,
                     style: TextStyle(
                       fontSize: 18,
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    '100%',
+                    '${processState.progress}%',
                     style: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  SizedBox(height: 16),
+                  LinearProgressIndicator(
+                    value: processState.progress / 100,
+                    minHeight: 10,
+                    backgroundColor: Colors.grey[300],
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
+                  ),
+                  if (processState.errorMessage != null)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 16),
+                      child: Text(
+                        processState.errorMessage!,
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
                 ],
               ),
             ),
@@ -54,11 +104,24 @@ class _ProcessScreenState extends State<ProcessScreen> {
               child: OutlinedButton(
                 style: ButtonStyle(
                   backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (_) => Colors.blue),
+                    (_) => processState.state == ProcessingState.completed
+                        ? Colors.green
+                        : Colors.blue,
+                  ),
                 ),
-                onPressed: () async {},
+                onPressed: processState.state == ProcessingState.processing
+                    ? null
+                    : () async {
+                        if (processState.state == ProcessingState.completed) {
+                          await controller.sendResults();
+                        } else {
+                          await controller.startProcessing();
+                        }
+                      },
                 child: Text(
-                  'Send result to server',
+                  processState.state == ProcessingState.completed
+                      ? 'Send result to server'
+                      : 'Start processing',
                   style: TextStyle(
                     color: Colors.white,
                   ),
