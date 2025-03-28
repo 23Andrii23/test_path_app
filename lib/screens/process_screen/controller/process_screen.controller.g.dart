@@ -7,7 +7,7 @@ part of 'process_screen.controller.dart';
 // **************************************************************************
 
 String _$processScreenControllerHash() =>
-    r'1eab664f4af6cb8708e16cf35b7a6ec79f321708';
+    r'e6e4f9e776ca937b05a917ecf78558d8bb1fd9c2';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -32,10 +32,10 @@ class _SystemHash {
 
 abstract class _$ProcessScreenController
     extends BuildlessAutoDisposeNotifier<ProcessState> {
-  late final MainResponse mainResponse;
+  late final String apiUrl;
 
   ProcessState build(
-    MainResponse mainResponse,
+    String apiUrl,
   );
 }
 
@@ -50,10 +50,10 @@ class ProcessScreenControllerFamily extends Family<ProcessState> {
 
   /// See also [ProcessScreenController].
   ProcessScreenControllerProvider call(
-    MainResponse mainResponse,
+    String apiUrl,
   ) {
     return ProcessScreenControllerProvider(
-      mainResponse,
+      apiUrl,
     );
   }
 
@@ -62,7 +62,7 @@ class ProcessScreenControllerFamily extends Family<ProcessState> {
     covariant ProcessScreenControllerProvider provider,
   ) {
     return call(
-      provider.mainResponse,
+      provider.apiUrl,
     );
   }
 
@@ -86,9 +86,9 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
     ProcessScreenController, ProcessState> {
   /// See also [ProcessScreenController].
   ProcessScreenControllerProvider(
-    MainResponse mainResponse,
+    String apiUrl,
   ) : this._internal(
-          () => ProcessScreenController()..mainResponse = mainResponse,
+          () => ProcessScreenController()..apiUrl = apiUrl,
           from: processScreenControllerProvider,
           name: r'processScreenControllerProvider',
           debugGetCreateSourceHash:
@@ -98,7 +98,7 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
           dependencies: ProcessScreenControllerFamily._dependencies,
           allTransitiveDependencies:
               ProcessScreenControllerFamily._allTransitiveDependencies,
-          mainResponse: mainResponse,
+          apiUrl: apiUrl,
         );
 
   ProcessScreenControllerProvider._internal(
@@ -108,17 +108,17 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
     required super.allTransitiveDependencies,
     required super.debugGetCreateSourceHash,
     required super.from,
-    required this.mainResponse,
+    required this.apiUrl,
   }) : super.internal();
 
-  final MainResponse mainResponse;
+  final String apiUrl;
 
   @override
   ProcessState runNotifierBuild(
     covariant ProcessScreenController notifier,
   ) {
     return notifier.build(
-      mainResponse,
+      apiUrl,
     );
   }
 
@@ -127,13 +127,13 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
     return ProviderOverride(
       origin: this,
       override: ProcessScreenControllerProvider._internal(
-        () => create()..mainResponse = mainResponse,
+        () => create()..apiUrl = apiUrl,
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
-        mainResponse: mainResponse,
+        apiUrl: apiUrl,
       ),
     );
   }
@@ -146,14 +146,13 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
 
   @override
   bool operator ==(Object other) {
-    return other is ProcessScreenControllerProvider &&
-        other.mainResponse == mainResponse;
+    return other is ProcessScreenControllerProvider && other.apiUrl == apiUrl;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
-    hash = _SystemHash.combine(hash, mainResponse.hashCode);
+    hash = _SystemHash.combine(hash, apiUrl.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -163,8 +162,8 @@ class ProcessScreenControllerProvider extends AutoDisposeNotifierProviderImpl<
 // ignore: unused_element
 mixin ProcessScreenControllerRef
     on AutoDisposeNotifierProviderRef<ProcessState> {
-  /// The parameter `mainResponse` of this provider.
-  MainResponse get mainResponse;
+  /// The parameter `apiUrl` of this provider.
+  String get apiUrl;
 }
 
 class _ProcessScreenControllerProviderElement
@@ -173,8 +172,7 @@ class _ProcessScreenControllerProviderElement
   _ProcessScreenControllerProviderElement(super.provider);
 
   @override
-  MainResponse get mainResponse =>
-      (origin as ProcessScreenControllerProvider).mainResponse;
+  String get apiUrl => (origin as ProcessScreenControllerProvider).apiUrl;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
