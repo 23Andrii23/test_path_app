@@ -18,7 +18,6 @@ class ResultListScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Result list screen'),
-        backgroundColor: Colors.blue,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),

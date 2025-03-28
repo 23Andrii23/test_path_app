@@ -29,7 +29,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
-        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Column(
@@ -102,10 +101,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               margin: const EdgeInsets.all(16),
               width: double.infinity,
               child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                      (_) => Colors.blue),
-                ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     final url = _controller.text;
@@ -132,12 +127,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     });
                   }
                 },
-                child: Text(
-                  'Start counting process',
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                child: Text('Start counting process'),
               ),
             ),
           ],

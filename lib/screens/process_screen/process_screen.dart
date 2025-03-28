@@ -65,7 +65,6 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Process Screen'),
-        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Column(
@@ -129,11 +128,6 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
               margin: const EdgeInsets.all(16),
               width: double.infinity,
               child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (_) => Colors.blue,
-                  ),
-                ),
                 onPressed: isButtonEnabled
                     ? () async {
                         if (processState.state == ProcessingState.error ||
@@ -175,12 +169,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                         }
                       }
                     : null,
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                child: Text(buttonText),
               ),
             )
           ],
