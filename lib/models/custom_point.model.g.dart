@@ -1,17 +1,18 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'point.model.dart';
+part of 'custom_point.model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-_Point _$PointFromJson(Map<String, dynamic> json) => _Point(
+_CustomPoint _$CustomPointFromJson(Map<String, dynamic> json) => _CustomPoint(
       x: (json['x'] as num).toInt(),
       y: (json['y'] as num).toInt(),
     );
 
-Map<String, dynamic> _$PointToJson(_Point instance) => <String, dynamic>{
+Map<String, dynamic> _$CustomPointToJson(_CustomPoint instance) =>
+    <String, dynamic>{
       'x': instance.x,
       'y': instance.y,
     };

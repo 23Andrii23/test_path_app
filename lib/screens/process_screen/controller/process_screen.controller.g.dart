@@ -7,7 +7,7 @@ part of 'process_screen.controller.dart';
 // **************************************************************************
 
 String _$processScreenControllerHash() =>
-    r'1f22cbc854d2a98ccd3676ff8bc7c1e7ecbb4794';
+    r'060fc867ae1004c9406ec9967551d97e20a98d4f';
 
 /// Copied from Dart SDK
 class _SystemHash {

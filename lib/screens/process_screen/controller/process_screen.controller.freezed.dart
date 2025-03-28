@@ -19,6 +19,7 @@ mixin _$ProcessState {
   int get progress;
   String? get errorMessage;
   List<PathData>? get results;
+  Map<String, List<CustomPoint>>? get paths;
 
   /// Create a copy of ProcessState
   /// with the given fields replaced by the non-null parameter values.
@@ -38,16 +39,22 @@ mixin _$ProcessState {
                 other.progress == progress) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            const DeepCollectionEquality().equals(other.results, results));
+            const DeepCollectionEquality().equals(other.results, results) &&
+            const DeepCollectionEquality().equals(other.paths, paths));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, state, progress, errorMessage,
-      const DeepCollectionEquality().hash(results));
+  int get hashCode => Object.hash(
+      runtimeType,
+      state,
+      progress,
+      errorMessage,
+      const DeepCollectionEquality().hash(results),
+      const DeepCollectionEquality().hash(paths));
 
   @override
   String toString() {
-    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results)';
+    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results, paths: $paths)';
   }
 }
 
@@ -61,7 +68,8 @@ abstract mixin class $ProcessStateCopyWith<$Res> {
       {ProcessingState state,
       int progress,
       String? errorMessage,
-      List<PathData>? results});
+      List<PathData>? results,
+      Map<String, List<CustomPoint>>? paths});
 }
 
 /// @nodoc
@@ -80,6 +88,7 @@ class _$ProcessStateCopyWithImpl<$Res> implements $ProcessStateCopyWith<$Res> {
     Object? progress = null,
     Object? errorMessage = freezed,
     Object? results = freezed,
+    Object? paths = freezed,
   }) {
     return _then(_self.copyWith(
       state: null == state
@@ -98,6 +107,10 @@ class _$ProcessStateCopyWithImpl<$Res> implements $ProcessStateCopyWith<$Res> {
           ? _self.results
           : results // ignore: cast_nullable_to_non_nullable
               as List<PathData>?,
+      paths: freezed == paths
+          ? _self.paths
+          : paths // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<CustomPoint>>?,
     ));
   }
 }
@@ -109,8 +122,10 @@ class _ProcessState implements ProcessState {
       {required this.state,
       required this.progress,
       this.errorMessage,
-      final List<PathData>? results})
-      : _results = results;
+      final List<PathData>? results,
+      final Map<String, List<CustomPoint>>? paths})
+      : _results = results,
+        _paths = paths;
 
   @override
   final ProcessingState state;
@@ -126,6 +141,16 @@ class _ProcessState implements ProcessState {
     if (_results is EqualUnmodifiableListView) return _results;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
+  }
+
+  final Map<String, List<CustomPoint>>? _paths;
+  @override
+  Map<String, List<CustomPoint>>? get paths {
+    final value = _paths;
+    if (value == null) return null;
+    if (_paths is EqualUnmodifiableMapView) return _paths;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(value);
   }
 
   /// Create a copy of ProcessState
@@ -146,16 +171,22 @@ class _ProcessState implements ProcessState {
                 other.progress == progress) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
-            const DeepCollectionEquality().equals(other._results, _results));
+            const DeepCollectionEquality().equals(other._results, _results) &&
+            const DeepCollectionEquality().equals(other._paths, _paths));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, state, progress, errorMessage,
-      const DeepCollectionEquality().hash(_results));
+  int get hashCode => Object.hash(
+      runtimeType,
+      state,
+      progress,
+      errorMessage,
+      const DeepCollectionEquality().hash(_results),
+      const DeepCollectionEquality().hash(_paths));
 
   @override
   String toString() {
-    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results)';
+    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results, paths: $paths)';
   }
 }
 
@@ -171,7 +202,8 @@ abstract mixin class _$ProcessStateCopyWith<$Res>
       {ProcessingState state,
       int progress,
       String? errorMessage,
-      List<PathData>? results});
+      List<PathData>? results,
+      Map<String, List<CustomPoint>>? paths});
 }
 
 /// @nodoc
@@ -191,6 +223,7 @@ class __$ProcessStateCopyWithImpl<$Res>
     Object? progress = null,
     Object? errorMessage = freezed,
     Object? results = freezed,
+    Object? paths = freezed,
   }) {
     return _then(_ProcessState(
       state: null == state
@@ -209,6 +242,10 @@ class __$ProcessStateCopyWithImpl<$Res>
           ? _self._results
           : results // ignore: cast_nullable_to_non_nullable
               as List<PathData>?,
+      paths: freezed == paths
+          ? _self._paths
+          : paths // ignore: cast_nullable_to_non_nullable
+              as Map<String, List<CustomPoint>>?,
     ));
   }
 }

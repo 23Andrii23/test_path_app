@@ -4,7 +4,7 @@
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
-part of 'point.model.dart';
+part of 'custom_point.model.dart';
 
 // **************************************************************************
 // FreezedGenerator
@@ -14,25 +14,25 @@ part of 'point.model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
-mixin _$Point {
+mixin _$CustomPoint {
   int get x;
   int get y;
 
-  /// Create a copy of Point
+  /// Create a copy of CustomPoint
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  $PointCopyWith<Point> get copyWith =>
-      _$PointCopyWithImpl<Point>(this as Point, _$identity);
+  $CustomPointCopyWith<CustomPoint> get copyWith =>
+      _$CustomPointCopyWithImpl<CustomPoint>(this as CustomPoint, _$identity);
 
-  /// Serializes this Point to a JSON map.
+  /// Serializes this CustomPoint to a JSON map.
   Map<String, dynamic> toJson();
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is Point &&
+            other is CustomPoint &&
             (identical(other.x, x) || other.x == x) &&
             (identical(other.y, y) || other.y == y));
   }
@@ -43,26 +43,27 @@ mixin _$Point {
 
   @override
   String toString() {
-    return 'Point(x: $x, y: $y)';
+    return 'CustomPoint(x: $x, y: $y)';
   }
 }
 
 /// @nodoc
-abstract mixin class $PointCopyWith<$Res> {
-  factory $PointCopyWith(Point value, $Res Function(Point) _then) =
-      _$PointCopyWithImpl;
+abstract mixin class $CustomPointCopyWith<$Res> {
+  factory $CustomPointCopyWith(
+          CustomPoint value, $Res Function(CustomPoint) _then) =
+      _$CustomPointCopyWithImpl;
   @useResult
   $Res call({int x, int y});
 }
 
 /// @nodoc
-class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
-  _$PointCopyWithImpl(this._self, this._then);
+class _$CustomPointCopyWithImpl<$Res> implements $CustomPointCopyWith<$Res> {
+  _$CustomPointCopyWithImpl(this._self, this._then);
 
-  final Point _self;
-  final $Res Function(Point) _then;
+  final CustomPoint _self;
+  final $Res Function(CustomPoint) _then;
 
-  /// Create a copy of Point
+  /// Create a copy of CustomPoint
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -85,26 +86,27 @@ class _$PointCopyWithImpl<$Res> implements $PointCopyWith<$Res> {
 
 /// @nodoc
 @JsonSerializable()
-class _Point implements Point {
-  const _Point({required this.x, required this.y});
-  factory _Point.fromJson(Map<String, dynamic> json) => _$PointFromJson(json);
+class _CustomPoint implements CustomPoint {
+  const _CustomPoint({required this.x, required this.y});
+  factory _CustomPoint.fromJson(Map<String, dynamic> json) =>
+      _$CustomPointFromJson(json);
 
   @override
   final int x;
   @override
   final int y;
 
-  /// Create a copy of Point
+  /// Create a copy of CustomPoint
   /// with the given fields replaced by the non-null parameter values.
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   @pragma('vm:prefer-inline')
-  _$PointCopyWith<_Point> get copyWith =>
-      __$PointCopyWithImpl<_Point>(this, _$identity);
+  _$CustomPointCopyWith<_CustomPoint> get copyWith =>
+      __$CustomPointCopyWithImpl<_CustomPoint>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$PointToJson(
+    return _$CustomPointToJson(
       this,
     );
   }
@@ -113,7 +115,7 @@ class _Point implements Point {
   bool operator ==(Object other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _Point &&
+            other is _CustomPoint &&
             (identical(other.x, x) || other.x == x) &&
             (identical(other.y, y) || other.y == y));
   }
@@ -124,27 +126,29 @@ class _Point implements Point {
 
   @override
   String toString() {
-    return 'Point(x: $x, y: $y)';
+    return 'CustomPoint(x: $x, y: $y)';
   }
 }
 
 /// @nodoc
-abstract mixin class _$PointCopyWith<$Res> implements $PointCopyWith<$Res> {
-  factory _$PointCopyWith(_Point value, $Res Function(_Point) _then) =
-      __$PointCopyWithImpl;
+abstract mixin class _$CustomPointCopyWith<$Res>
+    implements $CustomPointCopyWith<$Res> {
+  factory _$CustomPointCopyWith(
+          _CustomPoint value, $Res Function(_CustomPoint) _then) =
+      __$CustomPointCopyWithImpl;
   @override
   @useResult
   $Res call({int x, int y});
 }
 
 /// @nodoc
-class __$PointCopyWithImpl<$Res> implements _$PointCopyWith<$Res> {
-  __$PointCopyWithImpl(this._self, this._then);
+class __$CustomPointCopyWithImpl<$Res> implements _$CustomPointCopyWith<$Res> {
+  __$CustomPointCopyWithImpl(this._self, this._then);
 
-  final _Point _self;
-  final $Res Function(_Point) _then;
+  final _CustomPoint _self;
+  final $Res Function(_CustomPoint) _then;
 
-  /// Create a copy of Point
+  /// Create a copy of CustomPoint
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
@@ -152,7 +156,7 @@ class __$PointCopyWithImpl<$Res> implements _$PointCopyWith<$Res> {
     Object? x = null,
     Object? y = null,
   }) {
-    return _then(_Point(
+    return _then(_CustomPoint(
       x: null == x
           ? _self.x
           : x // ignore: cast_nullable_to_non_nullable

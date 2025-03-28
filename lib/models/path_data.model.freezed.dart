@@ -17,8 +17,8 @@ T _$identity<T>(T value) => value;
 mixin _$PathData {
   String get id;
   List<String> get field;
-  Point get start;
-  Point get end;
+  CustomPoint get start;
+  CustomPoint get end;
 
   /// Create a copy of PathData
   /// with the given fields replaced by the non-null parameter values.
@@ -57,10 +57,11 @@ abstract mixin class $PathDataCopyWith<$Res> {
   factory $PathDataCopyWith(PathData value, $Res Function(PathData) _then) =
       _$PathDataCopyWithImpl;
   @useResult
-  $Res call({String id, List<String> field, Point start, Point end});
+  $Res call(
+      {String id, List<String> field, CustomPoint start, CustomPoint end});
 
-  $PointCopyWith<$Res> get start;
-  $PointCopyWith<$Res> get end;
+  $CustomPointCopyWith<$Res> get start;
+  $CustomPointCopyWith<$Res> get end;
 }
 
 /// @nodoc
@@ -92,11 +93,11 @@ class _$PathDataCopyWithImpl<$Res> implements $PathDataCopyWith<$Res> {
       start: null == start
           ? _self.start
           : start // ignore: cast_nullable_to_non_nullable
-              as Point,
+              as CustomPoint,
       end: null == end
           ? _self.end
           : end // ignore: cast_nullable_to_non_nullable
-              as Point,
+              as CustomPoint,
     ));
   }
 
@@ -104,8 +105,8 @@ class _$PathDataCopyWithImpl<$Res> implements $PathDataCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PointCopyWith<$Res> get start {
-    return $PointCopyWith<$Res>(_self.start, (value) {
+  $CustomPointCopyWith<$Res> get start {
+    return $CustomPointCopyWith<$Res>(_self.start, (value) {
       return _then(_self.copyWith(start: value));
     });
   }
@@ -114,8 +115,8 @@ class _$PathDataCopyWithImpl<$Res> implements $PathDataCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PointCopyWith<$Res> get end {
-    return $PointCopyWith<$Res>(_self.end, (value) {
+  $CustomPointCopyWith<$Res> get end {
+    return $CustomPointCopyWith<$Res>(_self.end, (value) {
       return _then(_self.copyWith(end: value));
     });
   }
@@ -144,9 +145,9 @@ class _PathData implements PathData {
   }
 
   @override
-  final Point start;
+  final CustomPoint start;
   @override
-  final Point end;
+  final CustomPoint end;
 
   /// Create a copy of PathData
   /// with the given fields replaced by the non-null parameter values.
@@ -192,12 +193,13 @@ abstract mixin class _$PathDataCopyWith<$Res>
       __$PathDataCopyWithImpl;
   @override
   @useResult
-  $Res call({String id, List<String> field, Point start, Point end});
+  $Res call(
+      {String id, List<String> field, CustomPoint start, CustomPoint end});
 
   @override
-  $PointCopyWith<$Res> get start;
+  $CustomPointCopyWith<$Res> get start;
   @override
-  $PointCopyWith<$Res> get end;
+  $CustomPointCopyWith<$Res> get end;
 }
 
 /// @nodoc
@@ -229,11 +231,11 @@ class __$PathDataCopyWithImpl<$Res> implements _$PathDataCopyWith<$Res> {
       start: null == start
           ? _self.start
           : start // ignore: cast_nullable_to_non_nullable
-              as Point,
+              as CustomPoint,
       end: null == end
           ? _self.end
           : end // ignore: cast_nullable_to_non_nullable
-              as Point,
+              as CustomPoint,
     ));
   }
 
@@ -241,8 +243,8 @@ class __$PathDataCopyWithImpl<$Res> implements _$PathDataCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PointCopyWith<$Res> get start {
-    return $PointCopyWith<$Res>(_self.start, (value) {
+  $CustomPointCopyWith<$Res> get start {
+    return $CustomPointCopyWith<$Res>(_self.start, (value) {
       return _then(_self.copyWith(start: value));
     });
   }
@@ -251,8 +253,8 @@ class __$PathDataCopyWithImpl<$Res> implements _$PathDataCopyWith<$Res> {
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $PointCopyWith<$Res> get end {
-    return $PointCopyWith<$Res>(_self.end, (value) {
+  $CustomPointCopyWith<$Res> get end {
+    return $CustomPointCopyWith<$Res>(_self.end, (value) {
       return _then(_self.copyWith(end: value));
     });
   }

@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:webspark_test/models/cell.model.dart';
+import 'package:webspark_test/models/custom_point.model.dart';
 import 'package:webspark_test/models/path_data.model.dart';
 
 class PathFinder {
@@ -24,10 +25,10 @@ class PathFinder {
   }
 
   // Find shortest path using A* algorithm
-  static List<Point<int>> findPath({
+  static List<CustomPoint> findPath({
     required List<String> field,
-    required Point<int> start,
-    required Point<int> end,
+    required CustomPoint start,
+    required CustomPoint end,
   }) {
     if (!_validateConstraints(field)) {
       throw ArgumentError('Field size must be between 2x2 and 99x99');
@@ -147,11 +148,14 @@ class PathFinder {
   }
 
   // Reconstruct path from end to start using parent references
-  static List<Point<int>> _reconstructPath(Cell? current) {
-    final path = <Point<int>>[];
+  static List<CustomPoint> _reconstructPath(Cell? current) {
+    final path = <CustomPoint>[];
 
     while (current != null) {
-      path.add(Point(current.x, current.y));
+      path.add(CustomPoint(
+        x: current.x,
+        y: current.y,
+      ));
       current = current.parent;
     }
 
@@ -159,10 +163,10 @@ class PathFinder {
     return path.reversed.toList();
   }
 
-  static List<Point<int>> processPath(PathData pathData) {
+  static List<CustomPoint> processPath(PathData pathData) {
     final field = pathData.field;
-    final start = Point<int>(pathData.start.x, pathData.start.y);
-    final end = Point<int>(pathData.end.x, pathData.end.y);
+    final start = CustomPoint(x: pathData.start.x, y: pathData.start.y);
+    final end = CustomPoint(x: pathData.end.x, y: pathData.end.y);
 
     try {
       return findPath(field: field, start: start, end: end);
