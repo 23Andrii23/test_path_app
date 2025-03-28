@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/screens/process_screen/controller/process_screen.controller.dart';
+import 'package:webspark_test/screens/result_list_screen/result_list_screen.dart';
 
 class ProcessScreen extends ConsumerStatefulWidget {
   final MainResponse mainResponse;
@@ -41,7 +42,8 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
       case ProcessingState.processing:
         statusText = 'Processing...';
       case ProcessingState.completed:
-        statusText = 'Completed';
+        statusText =
+            'All calculations has finished, you can send your results to server';
       case ProcessingState.error:
         statusText = 'Error!';
     }
@@ -114,7 +116,37 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                     ? null
                     : () async {
                         if (processState.state == ProcessingState.completed) {
-                          await controller.sendResults();
+                          final result = await controller.sendResults();
+
+                          if (result != null && !result.error) {
+                            bool allCorrect = true;
+                            for (final item in result.data) {
+                              if (!item.correct) {
+                                allCorrect = false;
+                                break;
+                              }
+                            }
+                            if (!context.mounted) return;
+
+                            if (allCorrect) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => ResultListScreen(
+                                    mainResponse: widget.mainResponse,
+                                    paths: processState.paths,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    'Some results are incorrect. Please try again.',
+                                  ),
+                                ),
+                              );
+                            }
+                          }
                         }
                       },
                 child: Text(
