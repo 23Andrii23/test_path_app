@@ -65,7 +65,6 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Process Screen'),
-        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Column(
@@ -175,12 +174,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                         }
                       }
                     : null,
-                child: Text(
-                  buttonText,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
+                child: Text(buttonText),
               ),
             )
           ],

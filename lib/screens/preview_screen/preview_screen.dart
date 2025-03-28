@@ -31,7 +31,6 @@ class PreviewScreen extends StatelessWidget {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text('Preview screen'),
-        backgroundColor: Colors.blue,
       ),
       body: Column(
         children: [

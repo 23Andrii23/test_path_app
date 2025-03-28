@@ -19,7 +19,17 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+        appBarTheme: AppBarTheme(
+          color: Colors.blue,
+          foregroundColor: Colors.white,
+        ),
         useMaterial3: true,
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            foregroundColor: Colors.white,
+          ),
+        ),
       ),
       home: const HomeScreen(),
     );
