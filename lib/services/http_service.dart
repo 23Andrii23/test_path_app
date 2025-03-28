@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:webspark_test/models/custom_point.model.dart';
 import 'package:webspark_test/models/main_response.model.dart';
+import 'package:webspark_test/models/result_response.dart';
 
 class HttpService {
   Future<MainResponse> getMainData(String url) async {
@@ -18,7 +19,7 @@ class HttpService {
     }
   }
 
-  Future<void> postMainData({
+  Future<ResultResponse> postMainData({
     required String url,
     required Map<String, List<CustomPoint>> idPathMap,
   }) async {
@@ -42,7 +43,6 @@ class HttpService {
         });
       });
 
-      debugPrint('Posting data: $requestBody');
       final String jsonBody = jsonEncode(requestBody);
 
       final response = await http.post(
@@ -58,7 +58,8 @@ class HttpService {
             'Failed to post data. Status code: ${response.statusCode}, Response: ${response.body}');
       }
 
-      debugPrint('Successfully posted data: $jsonBody');
+      final result = ResultResponse.fromJson(jsonDecode(response.body));
+      return result;
     } catch (e) {
       debugPrint('Error posting data: ${e.toString()}');
       rethrow;

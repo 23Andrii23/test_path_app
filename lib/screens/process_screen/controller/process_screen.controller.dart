@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:webspark_test/models/custom_point.model.dart';
 import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/models/path_data.model.dart';
+import 'package:webspark_test/models/result_response.dart';
 import 'package:webspark_test/screens/process_screen/path_finder/path_finder.dart';
 import 'package:webspark_test/services/http_service.dart';
 
@@ -85,7 +86,7 @@ class ProcessScreenController extends _$ProcessScreenController {
     return shortestPath;
   }
 
-  Future<void> sendResults() async {
+  Future<ResultResponse?> sendResults() async {
     if (state.state != ProcessingState.completed ||
         state.results == null ||
         state.paths == null) {
@@ -93,7 +94,7 @@ class ProcessScreenController extends _$ProcessScreenController {
         state: ProcessingState.error,
         errorMessage: 'No results to send',
       );
-      return;
+      return null;
     }
 
     try {
@@ -113,12 +114,14 @@ class ProcessScreenController extends _$ProcessScreenController {
         idPathMap[id] = path;
       }
 
-      await _httpService.postMainData(
+      final result = await _httpService.postMainData(
         url: apiUrl,
         idPathMap: idPathMap,
       );
 
       state = state.copyWith(state: ProcessingState.completed);
+
+      return result;
     } catch (e) {
       state = state.copyWith(
         state: ProcessingState.error,
