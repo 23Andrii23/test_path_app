@@ -154,7 +154,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                             if (!context.mounted) return;
 
                             if (allCorrect) {
-                              Navigator.of(context).pushReplacement(
+                              Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => ResultListScreen(
                                     mainResponse: processState.mainResponse!,
