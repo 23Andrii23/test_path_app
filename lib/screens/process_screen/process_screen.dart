@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/screens/process_screen/controller/process_screen.controller.dart';
 import 'package:webspark_test/screens/result_list_screen/result_list_screen.dart';
 
 class ProcessScreen extends ConsumerStatefulWidget {
-  final MainResponse mainResponse;
+  final String apiUrl;
 
   const ProcessScreen({
-    required this.mainResponse,
+    required this.apiUrl,
     super.key,
   });
 
@@ -22,30 +21,45 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref
-          .read(processScreenControllerProvider(widget.mainResponse).notifier)
-          .startProcessing();
+          .read(processScreenControllerProvider(widget.apiUrl).notifier)
+          .loadData();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final processState =
-        ref.watch(processScreenControllerProvider(widget.mainResponse));
+        ref.watch(processScreenControllerProvider(widget.apiUrl));
 
     final controller =
-        ref.read(processScreenControllerProvider(widget.mainResponse).notifier);
+        ref.read(processScreenControllerProvider(widget.apiUrl).notifier);
 
     String statusText = 'Wait';
+    String buttonText = 'Send result to server';
+    bool isButtonEnabled = false;
+
     switch (processState.state) {
       case ProcessingState.initial:
-        statusText = 'Ready';
+        statusText = 'Ready to process';
+        buttonText = 'Start processing';
+        isButtonEnabled = true;
+      case ProcessingState.loading:
+        statusText = 'Loading data...';
+        buttonText = 'Loading...';
+        isButtonEnabled = false;
       case ProcessingState.processing:
         statusText = 'Processing...';
+        buttonText = 'Processing...';
+        isButtonEnabled = false;
       case ProcessingState.completed:
         statusText =
             'All calculations has finished, you can send your results to server';
+        buttonText = 'Send result to server';
+        isButtonEnabled = true;
       case ProcessingState.error:
         statusText = 'Error!';
+        buttonText = 'Retry';
+        isButtonEnabled = true;
     }
 
     return Scaffold(
@@ -68,6 +82,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                     style: TextStyle(
                       fontSize: 18,
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 8),
                   Text(
@@ -81,11 +96,18 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                   SizedBox(
                     width: 100,
                     height: 100,
-                    child: CircularProgressIndicator(
-                      value: processState.progress / 100,
-                      backgroundColor: Colors.grey[300],
-                      valueColor: AlwaysStoppedAnimation<Color>(Colors.blue),
-                    ),
+                    child: (processState.state == ProcessingState.loading)
+                        ? CircularProgressIndicator(
+                            backgroundColor: Colors.grey[300],
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.blue),
+                          )
+                        : CircularProgressIndicator(
+                            value: processState.progress / 100,
+                            backgroundColor: Colors.grey[300],
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.blue),
+                          ),
                   ),
                   if (processState.errorMessage != null)
                     Padding(
@@ -112,10 +134,13 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                     (_) => Colors.blue,
                   ),
                 ),
-                onPressed: processState.state == ProcessingState.processing
-                    ? null
-                    : () async {
-                        if (processState.state == ProcessingState.completed) {
+                onPressed: isButtonEnabled
+                    ? () async {
+                        if (processState.state == ProcessingState.error ||
+                            processState.state == ProcessingState.initial) {
+                          await controller.loadData();
+                        } else if (processState.state ==
+                            ProcessingState.completed) {
                           final result = await controller.sendResults();
 
                           if (result != null && !result.error) {
@@ -132,7 +157,7 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                   builder: (context) => ResultListScreen(
-                                    mainResponse: widget.mainResponse,
+                                    mainResponse: processState.mainResponse!,
                                     paths: processState.paths,
                                   ),
                                 ),
@@ -148,9 +173,10 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
                             }
                           }
                         }
-                      },
+                      }
+                    : null,
                 child: Text(
-                  'Send result to server',
+                  buttonText,
                   style: TextStyle(
                     color: Colors.white,
                   ),

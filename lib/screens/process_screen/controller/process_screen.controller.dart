@@ -11,7 +11,7 @@ import 'package:webspark_test/services/http_service.dart';
 part 'process_screen.controller.freezed.dart';
 part 'process_screen.controller.g.dart';
 
-enum ProcessingState { initial, processing, completed, error }
+enum ProcessingState { initial, loading, processing, completed, error }
 
 @freezed
 abstract class ProcessState with _$ProcessState {
@@ -19,6 +19,7 @@ abstract class ProcessState with _$ProcessState {
     required ProcessingState state,
     required int progress,
     String? errorMessage,
+    MainResponse? mainResponse,
     List<PathData>? results,
     Map<String, List<CustomPoint>>? paths,
   }) = _ProcessState;
@@ -32,19 +33,44 @@ abstract class ProcessState with _$ProcessState {
 @riverpod
 class ProcessScreenController extends _$ProcessScreenController {
   final _httpService = HttpService();
-  //put your API URL here
-  final String apiUrl = '';
 
   @override
-  ProcessState build(MainResponse mainResponse) {
+  ProcessState build(String apiUrl) {
     return ProcessState.initial();
   }
 
+  Future<void> loadData() async {
+    state = state.copyWith(state: ProcessingState.loading);
+
+    try {
+      final response = await _httpService.getMainData(apiUrl);
+      state = state.copyWith(
+        state: ProcessingState.initial,
+        mainResponse: response,
+      );
+
+      await startProcessing();
+    } catch (e) {
+      state = state.copyWith(
+        state: ProcessingState.error,
+        errorMessage: 'Failed to load data: ${e.toString()}',
+      );
+    }
+  }
+
   Future<void> startProcessing() async {
+    if (state.mainResponse == null) {
+      state = state.copyWith(
+        state: ProcessingState.error,
+        errorMessage: 'No data to process',
+      );
+      return;
+    }
+
     state = state.copyWith(state: ProcessingState.processing);
 
     try {
-      final paths = mainResponse.data;
+      final paths = state.mainResponse!.data;
       final results = <PathData>[];
       final shortestPaths = <String, List<CustomPoint>>{};
 
@@ -74,6 +100,8 @@ class ProcessScreenController extends _$ProcessScreenController {
   }
 
   Future<List<CustomPoint>> _processPath(PathData path) async {
+    await Future.delayed(Duration(milliseconds: 100));
+
     final start = CustomPoint(x: path.start.x, y: path.start.y);
     final end = CustomPoint(x: path.end.x, y: path.end.y);
 
@@ -127,6 +155,7 @@ class ProcessScreenController extends _$ProcessScreenController {
         state: ProcessingState.error,
         errorMessage: e.toString(),
       );
+      return null;
     }
   }
 

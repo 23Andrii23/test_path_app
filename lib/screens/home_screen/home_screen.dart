@@ -108,25 +108,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
-                    try {
-                      final result =
-                          await controller.getMainData(_controller.text);
-                      if (result != null) {
-                        if (!context.mounted) return;
+                    final url = _controller.text;
 
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProcessScreen(
-                              mainResponse: result,
-                            ),
-                          ),
-                        );
-                      }
-                    } catch (e) {
+                    final validationError = controller.validateUrl(url);
+                    if (validationError != null) {
                       setState(() {
-                        _errorMessage = e.toString();
+                        _errorMessage = validationError;
                       });
+                      return;
                     }
+
+                    if (!context.mounted) return;
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => ProcessScreen(
+                          apiUrl: url,
+                        ),
+                      ),
+                    );
                   } else {
                     setState(() {
                       _errorMessage = controller.validateUrl(_controller.text);

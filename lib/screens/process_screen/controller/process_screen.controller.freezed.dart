@@ -18,6 +18,7 @@ mixin _$ProcessState {
   ProcessingState get state;
   int get progress;
   String? get errorMessage;
+  MainResponse? get mainResponse;
   List<PathData>? get results;
   Map<String, List<CustomPoint>>? get paths;
 
@@ -39,6 +40,8 @@ mixin _$ProcessState {
                 other.progress == progress) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
+            (identical(other.mainResponse, mainResponse) ||
+                other.mainResponse == mainResponse) &&
             const DeepCollectionEquality().equals(other.results, results) &&
             const DeepCollectionEquality().equals(other.paths, paths));
   }
@@ -49,12 +52,13 @@ mixin _$ProcessState {
       state,
       progress,
       errorMessage,
+      mainResponse,
       const DeepCollectionEquality().hash(results),
       const DeepCollectionEquality().hash(paths));
 
   @override
   String toString() {
-    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results, paths: $paths)';
+    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, mainResponse: $mainResponse, results: $results, paths: $paths)';
   }
 }
 
@@ -68,8 +72,11 @@ abstract mixin class $ProcessStateCopyWith<$Res> {
       {ProcessingState state,
       int progress,
       String? errorMessage,
+      MainResponse? mainResponse,
       List<PathData>? results,
       Map<String, List<CustomPoint>>? paths});
+
+  $MainResponseCopyWith<$Res>? get mainResponse;
 }
 
 /// @nodoc
@@ -87,6 +94,7 @@ class _$ProcessStateCopyWithImpl<$Res> implements $ProcessStateCopyWith<$Res> {
     Object? state = null,
     Object? progress = null,
     Object? errorMessage = freezed,
+    Object? mainResponse = freezed,
     Object? results = freezed,
     Object? paths = freezed,
   }) {
@@ -103,6 +111,10 @@ class _$ProcessStateCopyWithImpl<$Res> implements $ProcessStateCopyWith<$Res> {
           ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      mainResponse: freezed == mainResponse
+          ? _self.mainResponse
+          : mainResponse // ignore: cast_nullable_to_non_nullable
+              as MainResponse?,
       results: freezed == results
           ? _self.results
           : results // ignore: cast_nullable_to_non_nullable
@@ -113,6 +125,20 @@ class _$ProcessStateCopyWithImpl<$Res> implements $ProcessStateCopyWith<$Res> {
               as Map<String, List<CustomPoint>>?,
     ));
   }
+
+  /// Create a copy of ProcessState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MainResponseCopyWith<$Res>? get mainResponse {
+    if (_self.mainResponse == null) {
+      return null;
+    }
+
+    return $MainResponseCopyWith<$Res>(_self.mainResponse!, (value) {
+      return _then(_self.copyWith(mainResponse: value));
+    });
+  }
 }
 
 /// @nodoc
@@ -122,6 +148,7 @@ class _ProcessState implements ProcessState {
       {required this.state,
       required this.progress,
       this.errorMessage,
+      this.mainResponse,
       final List<PathData>? results,
       final Map<String, List<CustomPoint>>? paths})
       : _results = results,
@@ -133,6 +160,8 @@ class _ProcessState implements ProcessState {
   final int progress;
   @override
   final String? errorMessage;
+  @override
+  final MainResponse? mainResponse;
   final List<PathData>? _results;
   @override
   List<PathData>? get results {
@@ -171,6 +200,8 @@ class _ProcessState implements ProcessState {
                 other.progress == progress) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
+            (identical(other.mainResponse, mainResponse) ||
+                other.mainResponse == mainResponse) &&
             const DeepCollectionEquality().equals(other._results, _results) &&
             const DeepCollectionEquality().equals(other._paths, _paths));
   }
@@ -181,12 +212,13 @@ class _ProcessState implements ProcessState {
       state,
       progress,
       errorMessage,
+      mainResponse,
       const DeepCollectionEquality().hash(_results),
       const DeepCollectionEquality().hash(_paths));
 
   @override
   String toString() {
-    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, results: $results, paths: $paths)';
+    return 'ProcessState(state: $state, progress: $progress, errorMessage: $errorMessage, mainResponse: $mainResponse, results: $results, paths: $paths)';
   }
 }
 
@@ -202,8 +234,12 @@ abstract mixin class _$ProcessStateCopyWith<$Res>
       {ProcessingState state,
       int progress,
       String? errorMessage,
+      MainResponse? mainResponse,
       List<PathData>? results,
       Map<String, List<CustomPoint>>? paths});
+
+  @override
+  $MainResponseCopyWith<$Res>? get mainResponse;
 }
 
 /// @nodoc
@@ -222,6 +258,7 @@ class __$ProcessStateCopyWithImpl<$Res>
     Object? state = null,
     Object? progress = null,
     Object? errorMessage = freezed,
+    Object? mainResponse = freezed,
     Object? results = freezed,
     Object? paths = freezed,
   }) {
@@ -238,6 +275,10 @@ class __$ProcessStateCopyWithImpl<$Res>
           ? _self.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String?,
+      mainResponse: freezed == mainResponse
+          ? _self.mainResponse
+          : mainResponse // ignore: cast_nullable_to_non_nullable
+              as MainResponse?,
       results: freezed == results
           ? _self._results
           : results // ignore: cast_nullable_to_non_nullable
@@ -247,6 +288,20 @@ class __$ProcessStateCopyWithImpl<$Res>
           : paths // ignore: cast_nullable_to_non_nullable
               as Map<String, List<CustomPoint>>?,
     ));
+  }
+
+  /// Create a copy of ProcessState
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @pragma('vm:prefer-inline')
+  $MainResponseCopyWith<$Res>? get mainResponse {
+    if (_self.mainResponse == null) {
+      return null;
+    }
+
+    return $MainResponseCopyWith<$Res>(_self.mainResponse!, (value) {
+      return _then(_self.copyWith(mainResponse: value));
+    });
   }
 }
 
