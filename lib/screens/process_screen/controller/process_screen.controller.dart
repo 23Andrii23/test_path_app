@@ -43,7 +43,7 @@ class ProcessScreenController extends _$ProcessScreenController {
     state = state.copyWith(state: ProcessingState.loading);
 
     try {
-      final response = await _httpService.getMainData(apiUrl);
+      final response = await _httpService.fetchPathData(apiUrl);
       state = state.copyWith(
         state: ProcessingState.initial,
         mainResponse: response,
@@ -140,7 +140,7 @@ class ProcessScreenController extends _$ProcessScreenController {
         idPathMap[id] = path;
       }
 
-      final result = await _httpService.postMainData(
+      final result = await _httpService.postPathResult(
         url: apiUrl,
         idPathMap: idPathMap,
       );

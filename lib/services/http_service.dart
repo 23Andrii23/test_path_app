@@ -7,7 +7,7 @@ import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/models/result_response.dart';
 
 class HttpService {
-  Future<MainResponse> getMainData(String url) async {
+  Future<MainResponse> fetchPathData(String url) async {
     try {
       final response = await http.get(Uri.parse(url));
 
@@ -19,7 +19,7 @@ class HttpService {
     }
   }
 
-  Future<ResultResponse> postMainData({
+  Future<ResultResponse> postPathResult({
     required String url,
     required Map<String, List<CustomPoint>> idPathMap,
   }) async {
