@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:webspark_test/models/custom_point.model.dart';
 import 'package:webspark_test/models/main_response.model.dart';
+import 'package:webspark_test/screens/preview_screen/preview_screen.dart';
 
 class ResultListScreen extends StatelessWidget {
   final MainResponse mainResponse;
@@ -37,7 +38,15 @@ class ResultListScreen extends StatelessWidget {
 
           return GestureDetector(
             onTap: () {
-              //TODO: Implement navigation to the path details screen
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => PreviewScreen(
+                    mainResponse: mainResponse,
+                    pathString: pathRepresentation,
+                    pathId: item.id,
+                  ),
+                ),
+              );
             },
             child: Container(
               width: double.infinity,
