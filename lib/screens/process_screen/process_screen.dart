@@ -128,11 +128,6 @@ class _ProcessScreenState extends ConsumerState<ProcessScreen> {
               margin: const EdgeInsets.all(16),
               width: double.infinity,
               child: OutlinedButton(
-                style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                    (_) => Colors.blue,
-                  ),
-                ),
                 onPressed: isButtonEnabled
                     ? () async {
                         if (processState.state == ProcessingState.error ||
