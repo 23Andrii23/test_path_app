@@ -1,3 +1,4 @@
+import 'package:webspark_test/models/main_response.model.dart';
 import 'package:webspark_test/services/http_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -14,7 +15,7 @@ class HomeScreenController extends _$HomeScreenController {
 
   String? validateUrl(String? value) {
     if (value == null || value.isEmpty) {
-      return 'URL не може бути порожнім';
+      return 'URL cannot be empty.';
     }
 
     final RegExp urlRegExp = RegExp(
@@ -35,18 +36,18 @@ class HomeScreenController extends _$HomeScreenController {
     return null;
   }
 
-  Future<void> getMainData(String url) async {
+  Future<MainResponse?> getMainData(String url) async {
     state = const AsyncLoading();
 
     try {
       final validationResult = validateUrl(url);
       if (validationResult != null) {
         state = AsyncError(validationResult, StackTrace.current);
-        return;
+        return null;
       }
 
-      await _httpService.getMainData(url);
-
+      final response = await _httpService.getMainData(url);
+      return response;
       state = const AsyncData(null);
     } catch (e, stackTrace) {
       state = AsyncError(e, stackTrace);

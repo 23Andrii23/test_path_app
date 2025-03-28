@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:webspark_test/screens/home_screen/controller/home_screen.controller.dart';
+import 'package:webspark_test/screens/process_screen/process_screen.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -28,7 +29,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home Screen'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Colors.blue,
       ),
       body: SafeArea(
         child: Column(
@@ -108,7 +109,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     try {
-                      await controller.getMainData(_controller.text);
+                      final result =
+                          await controller.getMainData(_controller.text);
+                      if (result != null) {
+                        if (!context.mounted) return;
+
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ProcessScreen(
+                              mainResponse: result,
+                            ),
+                          ),
+                        );
+                      }
                     } catch (e) {
                       setState(() {
                         _errorMessage = e.toString();
@@ -127,7 +140,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
