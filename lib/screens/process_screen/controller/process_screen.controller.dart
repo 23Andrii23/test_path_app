@@ -100,8 +100,6 @@ class ProcessScreenController extends _$ProcessScreenController {
   }
 
   Future<List<CustomPoint>> _processPath(PathData path) async {
-    await Future.delayed(Duration(milliseconds: 100));
-
     final start = CustomPoint(x: path.start.x, y: path.start.y);
     final end = CustomPoint(x: path.end.x, y: path.end.y);
 
